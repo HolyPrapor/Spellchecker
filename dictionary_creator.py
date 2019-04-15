@@ -57,7 +57,8 @@ def parse_args():
     """Настройка argparse"""
     parser = argparse.ArgumentParser(
         description='Utility for creating, appending, merging dictionaries')
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(dest='Mode')
+    subparsers.required = True
     parser_append = subparsers.add_parser(
         'append', help='Appends one dictionary to another')
     parser_append.add_argument('first_dict', help='First dictionary')

@@ -47,13 +47,15 @@ def count_new_row(previous_row, needle, new_letter):
     return current_row
 
 
-def count_table_recursively(trie, needle, max_levenshtein_value, previous_row, current_word, result):
+def count_table_recursively(trie, needle, max_levenshtein_value,
+                            previous_row, current_word, result):
     current_row = count_new_row(previous_row, needle, current_word[-1])
     if current_row[-1] <= max_levenshtein_value and trie.word:
         result.append((current_word, current_row[-1]))
     if min(current_row) <= max_levenshtein_value:
         for letter in trie.children:
-            count_table_recursively(trie.children[letter], needle, max_levenshtein_value, current_row,
+            count_table_recursively(trie.children[letter], needle,
+                                    max_levenshtein_value, current_row,
                                     current_word + letter, result)
 
 
@@ -62,8 +64,9 @@ def find_possible_replacements(trie, needle, max_levenshtein_value):
     first_row = range(len(needle) + 1)
     for letter in trie.root.children:
         count_table_recursively(trie.root.children[letter], needle,
-                                max_levenshtein_value, first_row, letter, possible_replacements)
-    return possible_replacements
+                                max_levenshtein_value,
+                                first_row, letter, possible_replacements)
+    return sorted(possible_replacements, key=lambda x: x[1])
 
 
 def is_word_in_dictionary(trie, needle):
@@ -72,5 +75,5 @@ def is_word_in_dictionary(trie, needle):
         if letter in current_node.children:
             current_node = current_node.children[letter]
         else:
-            return false
+            return False
     return current_node.word
