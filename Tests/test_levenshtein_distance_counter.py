@@ -17,13 +17,13 @@ class TestTest(unittest.TestCase):
         trie.insert_word(some_string)
         current_node = trie.root
         for letter in some_string:
-            self.assertTrue(letter in current_node)
+            self.assertTrue(letter in current_node.children)
             current_node = current_node.children[letter]
         some_string = 'apple'
         trie.insert_word(some_string)
         current_node = trie.root
         for letter in some_string:
-            self.assertTrue(letter in current_node)
+            self.assertTrue(letter in current_node.children)
             current_node = current_node.children[letter]
 
     def test_insert_word_when_word_is_already_inserted(self):
@@ -32,12 +32,12 @@ class TestTest(unittest.TestCase):
         trie.insert_word(some_string)
         current_node = trie.root
         for letter in some_string:
-            self.assertTrue(letter in current_node)
+            self.assertTrue(letter in current_node.children)
             current_node = current_node.children[letter]
         trie.insert_word(some_string)
         current_node = trie.root
         for letter in some_string:
-            self.assertTrue(letter in current_node)
+            self.assertTrue(letter in current_node.children)
             current_node = current_node.children[letter]
         self.assertTrue(current_node.word)
 
