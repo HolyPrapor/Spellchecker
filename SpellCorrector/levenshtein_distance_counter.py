@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 INSERT_COST = 1
 DELETE_COST = 1
 REPLACE_COST = 1
