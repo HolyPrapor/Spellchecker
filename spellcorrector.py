@@ -18,23 +18,30 @@ except Exception as e:
 word_getter = re.compile(r"\w+'?-?\w+")
 splitter = re.compile(r"[^\w']")
 number = re.compile(r"[0-9]+")
+dash = re.compile(r"-")
 line_break_detector = re.compile(r"(\w+)-$")
 
 
-def is_not_none_or_number(string):
-    return string and not number.match(string)
+def replace_start_with_spaces(string, amount):
+    return ' ' * amount + string[amount:]
+
+
+def is_not_none_or_number_or_dash(string):
+    return string and not number.search(string) and not \
+        dash.match(string)
 
 
 def detect_line_break(string):
     line_break_word = line_break_detector.search(string)
-    if line_break_word and is_not_none_or_number(line_break_word.group(1)):
-        return line_break_word.group(1)
+    if line_break_word \
+            and is_not_none_or_number_or_dash(line_break_word.group(1)):
+        return line_break_word
     return None
 
 
 def get_first_word_from_line(string):
     first_word = word_getter.search(string)
-    if first_word:
+    if first_word and is_not_none_or_number_or_dash(first_word.group(0)):
         return first_word.group(0)
     return None
 
@@ -55,7 +62,7 @@ def mispellings_corrector(dictionary, args):
     mispellings = mistake_iter(dictionary, args.infile)
     mistakes_corrected = 0
     for mispelling in mispellings:
-        word = mispelling[0].group(0)
+        word = mispelling[2]
         if mistakes_corrected < args.amount_of_corrections:
             is_space_missed = try_to_find_missed_space(dictionary,
                                                        word.casefold())
@@ -79,8 +86,8 @@ def mispellings_corrector(dictionary, args):
 def print_mistake_in_format(mistake, args, correction=None):
     formatted_mistake = ""
     if args.coordinate:
-        formatted_mistake += f"{mistake[1]}:{mistake[0].start()} "
-    formatted_mistake += f"{{'word': '{mistake[0].group(0)}'"
+        formatted_mistake += f"{mistake[1]}:{mistake[0]} "
+    formatted_mistake += f"{{'word': '{mistake[2]}'"
     if correction:
         formatted_mistake += f", 'correction': {str(correction)}"
     formatted_mistake += "} "
@@ -93,19 +100,19 @@ def mistake_iter(dictionary, text):
         if line_break_word:
             first_word = get_first_word_from_line(line)
             if first_word:
-                line = line[len(first_word):]
-                line_break_word += first_word
+                line = replace_start_with_spaces(line, len(first_word))
             if not first_word or \
-                    not ldc.is_word_in_dictionary(dictionary,
-                                                  line_break_word.casefold()):
-                yield (line_break_word, line_counter - 1)
+                    not ldc.is_word_in_dictionary(
+                        dictionary, line_break_word.group(1).casefold()):
+                yield (line_break_word.start(),
+                       line_counter, line_break_word.group(1) + first_word)
         line_break_word = detect_line_break(line)
         if line_break_word:
-            line = line[:-(len(line_break_word) + 2)]
+            line = line[:-(len(line_break_word.group(1)) + 2)]
         for word in word_getter.finditer(line):
             if not ldc.is_word_in_dictionary(dictionary,
                                              word.group(0).casefold()):
-                yield (word, line_counter)
+                yield (word.start(), line_counter + 1, word.group(0))
 
 
 def try_to_find_missed_space(dictionary, word):
