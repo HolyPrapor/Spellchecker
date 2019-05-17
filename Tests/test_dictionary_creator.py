@@ -22,6 +22,12 @@ class ArgsTypes(Enum):
     CREATE = 3
 
 
+def print_lines_to_file(lines, filename):
+    with open(filename, 'w', encoding='utf8') as f:
+        for line in lines:
+            print(line, file=f)
+
+
 def assert_file_lines_with_list(self, filename, correct_result):
     with open(filename, 'r') as f:
         num_lines = sum(1 for line in f)
@@ -50,12 +56,9 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_default_merge(self):
         with TempFiles(3) as files:
             first_dict = files[0]
-            with open(first_dict.name, 'w') as f:
-                print('apple', file=f)
-                print('hello', file=f)
+            print_lines_to_file(['apple', 'hello'], first_dict.name)
             second_dict = files[1]
-            with open(second_dict.name, 'w') as f:
-                print('bobby', file=f)
+            print_lines_to_file(['bobby'], second_dict.name)
             third_dict = files[2]
             args = prepare_args(ArgsTypes.MERGE, files)
             dic_cr.merge(args)
@@ -65,9 +68,7 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_merge_with_zero_length_dict(self):
         with TempFiles(3) as files:
             first_dict = files[0]
-            with open(first_dict.name, 'w') as f:
-                print('apple', file=f)
-                print('hello', file=f)
+            print_lines_to_file(['apple', 'hello'], first_dict.name)
             third_dict = files[2]
             args = prepare_args(ArgsTypes.MERGE, files)
             dic_cr.merge(args)
@@ -77,12 +78,9 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_default_append(self):
         with TempFiles(2) as files:
             first_dict = files[0]
-            with open(first_dict.name, 'w') as f:
-                print('apple', file=f)
-                print('hello', file=f)
+            print_lines_to_file(['apple', 'hello'], first_dict.name)
             second_dict = files[1]
-            with open(second_dict.name, 'w') as f:
-                print('bobby', file=f)
+            print_lines_to_file(['bobby'], second_dict.name)
             args = prepare_args(ArgsTypes.APPEND, files)
             dic_cr.append(args)
             correct_result = ['apple', 'bobby', 'hello']
@@ -92,8 +90,7 @@ class DictionaryCreatorTests(unittest.TestCase):
         with TempFiles(2) as files:
             first_dict = files[0]
             second_dict = files[1]
-            with open(second_dict.name, 'w') as f:
-                print('bobby', file=f)
+            print_lines_to_file(['bobby'], second_dict.name)
             args = prepare_args(ArgsTypes.APPEND, files)
             dic_cr.append(args)
             correct_result = ['bobby']
@@ -102,9 +99,8 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_default_create(self):
         with TempFiles(2) as files:
             text = files[0]
-            with open(text.name, 'w') as f:
-                print("This is test text.", file=f)
-                print('I like python!', file=f)
+            print_lines_to_file(
+                ["This is test text.", 'I like python!'], text.name)
             output = files[1]
             args = prepare_args(ArgsTypes.CREATE, files)
             args.encoding = 'utf8'
@@ -124,10 +120,7 @@ class DictionaryCreatorTests(unittest.TestCase):
 
     def test_default_get_words_from_dict(self):
         with TempFiles(1) as files:
-            with open(files[0].name, 'w') as f:
-                print('apple', file=f)
-                print('bobby', file=f)
-                print('hello', file=f)
+            print_lines_to_file(['apple', 'bobby', 'hello'], files[0].name)
             correct_result = {'apple', 'bobby', 'hello'}
             with open(files[0].name, 'r') as f:
                 result = dic_cr.get_words_from_dict(f)
@@ -135,10 +128,7 @@ class DictionaryCreatorTests(unittest.TestCase):
 
     def test_default_get_words_from_text(self):
         with TempFiles(1) as files:
-            with open(files[0].name, 'w') as f:
-                print('Hi baby', file=f)
-                print('How are', file=f)
-                print('you?', file=f)
+            print_lines_to_file(['Hi baby', 'How are', 'you?'], files[0].name)
             correct_result = {'hi', 'baby', 'how', 'are', 'you'}
             with open(files[0].name, 'r') as f:
                 result = dic_cr.get_words_from_text(f)
@@ -164,11 +154,9 @@ class DictionaryCreatorTests(unittest.TestCase):
 
     def test_get_words_from_text_with_numbers(self):
         with TempFiles(1) as files:
-            with open(files[0].name, 'w', encoding='utf8') as f:
-                print('Прив8ет', file=f)
-                print('как', file=f)
-                print('дела?', file=f)
-                print('8 9123 8-800-555-35-35', file=f)
+            print_lines_to_file(
+                ['Прив8ет', 'как', 'дела?', '8 9123 8-800-555-35-35'],
+                files[0].name)
             correct_result = {'как', 'дела'}
             with open(files[0].name, 'r', encoding='utf8') as f:
                 result = dic_cr.get_words_from_text(f)
@@ -186,9 +174,7 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_default_add(self):
         with TempFiles(1) as files:
             dictionary = files[0]
-            with open(dictionary.name, 'w') as f:
-                print('apple', file=f)
-                print('hello', file=f)
+            print_lines_to_file(['apple', 'hello'], dictionary.name)
             args = Args
             args.dict = dictionary.name
             args.word = 'mango'
@@ -199,9 +185,7 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_add_with_wrong_word(self):
         with TempFiles(1) as files:
             dictionary = files[0]
-            with open(dictionary.name, 'w') as f:
-                print('apple', file=f)
-                print('hello', file=f)
+            print_lines_to_file(['apple', 'hello'], dictionary.name)
             args = Args
             args.dict = dictionary.name
             args.word = 'lsakdf====--://'
@@ -212,9 +196,8 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_default_get_words_from_text_with_line_breaks(self):
         with TempFiles(1) as files:
             text = files[0]
-            with open(text.name, 'w') as f:
-                print('Hey Boys how are you do-', file=f)
-                print('ing today?', file=f)
+            print_lines_to_file(
+                ['Hey Boys how are you do-', 'ing today?'], text.name)
             correct_result = {'hey', 'boys', 'how', 'are', 'you', 'doing',
                               'today'}
             with open(files[0].name, 'r', encoding='utf8') as f:
@@ -224,10 +207,10 @@ class DictionaryCreatorTests(unittest.TestCase):
     def test_get_words_from_text_with_dashes(self):
         with TempFiles(1) as files:
             text = files[0]
-            with open(text.name, 'w') as f:
-                print('Hey Boys bla-bla how are you do-', file=f)
-                print('ing today? I fee-', file=f)
-                print('l yourself very good. Hey -', file=f)
+            print_lines_to_file(['Hey Boys bla-bla how are you do-',
+                                 'ing today? I fee-',
+                                 'l yourself very good. Hey -'],
+                                text.name)
             correct_result = {'bla-bla', 'hey', 'boys', 'how', 'are',
                               'you', 'doing', 'today', 'i',
                               'feel', 'yourself', 'very', 'good'}

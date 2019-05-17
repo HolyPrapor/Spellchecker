@@ -15,6 +15,12 @@ class Args:
     pass
 
 
+def print_lines_to_file(lines, filename):
+    with open(filename, 'w', encoding='utf8') as f:
+        for line in lines:
+            print(line, file=f)
+
+
 def assert_file_lines_with_list(self, filename, correct_result):
     with open(filename, 'r') as f:
         num_lines = sum(1 for line in f)
@@ -30,18 +36,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistakees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistakees', 'Isit a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             args = Args
             args.amount_of_mistakes = None
             args.coordinate = None
@@ -68,18 +69,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text without mistakes', file=f)
-                print('Is it a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('without', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text without mistakes', 'Is it a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'without',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             args = Args
             args.amount_of_mistakes = None
             args.coordinate = None
@@ -96,18 +92,13 @@ class SpellCorrectorTests(unittest.TestCase):
         with TempFiles(2) as files:
             text = files[0]
             dictionary = files[1]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistakees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistakees', 'Isit a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f:
                 mistakes = [mistake for mistake in spl.mistake_iter(trie, f)]
@@ -119,18 +110,13 @@ class SpellCorrectorTests(unittest.TestCase):
         with TempFiles(2) as files:
             text = files[0]
             dictionary = files[1]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text with mistakes', file=f)
-                print('Is it a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text without mistakes', 'Is it a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'without',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f:
                 mistakes = [mistake for mistake in spl.mistake_iter(trie, f)]
@@ -141,15 +127,11 @@ class SpellCorrectorTests(unittest.TestCase):
         with TempFiles(2) as files:
             text = files[0]
             dictionary = files[1]
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'without',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f:
                 mistakes = [mistake for mistake in spl.mistake_iter(trie, f)]
@@ -160,18 +142,14 @@ class SpellCorrectorTests(unittest.TestCase):
         with TempFiles(2) as files:
             text = files[0]
             dictionary = files[1]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistak-', file=f)
-                print('ees. Isit a mistake? -', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistak-', 'ees. Isit a mistake? -'],
+                text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f:
                 mistakes = [mistake for mistake in spl.mistake_iter(trie, f)]
@@ -183,18 +161,14 @@ class SpellCorrectorTests(unittest.TestCase):
         with TempFiles(2) as files:
             text = files[0]
             dictionary = files[1]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wi-ht mistak-ees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(['Test text wi-ht mistak-ees',
+                                 'Isit a mistake?'],
+                                text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f:
                 mistakes = [mistake for mistake in spl.mistake_iter(trie, f)]
@@ -205,22 +179,18 @@ class SpellCorrectorTests(unittest.TestCase):
     def test_default_try_to_find_missed_space(self):
         with TempFiles(1) as files:
             dictionary = files[0]
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'without',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
-        self.assertEqual(('is', 'it'),
+        self.assertEqual([('is', 'it')],
                          spl.try_to_find_missed_space(trie, 'isit'))
-        self.assertEqual(('test', 'text'),
+        self.assertEqual([('test', 'text')],
                          spl.try_to_find_missed_space(trie, 'testtext'))
-        self.assertIsNone(spl.try_to_find_missed_space(trie, 'mistake'))
-        self.assertIsNone(spl.try_to_find_missed_space(trie, ''))
+        self.assertEqual([], spl.try_to_find_missed_space(trie, 'mistake'))
+        self.assertEqual([], spl.try_to_find_missed_space(trie, ''))
 
     def test_default_print_mistake_in_format(self):
         with TempFiles(1) as files:
@@ -280,18 +250,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistakees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistakees', 'Isit a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f1:
                 with open(output.name, 'w', encoding='utf8') as f2:
@@ -312,18 +277,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text with mistakes', file=f)
-                print('Is it a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text with mistakes', 'Is it a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f1:
                 with open(output.name, 'w', encoding='utf8') as f2:
@@ -342,18 +302,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistakees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistakees', 'Isit a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f1:
                 with open(output.name, 'w', encoding='utf8') as f2:
@@ -374,18 +329,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistakees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistakees', 'Isit a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f1:
                 with open(output.name, 'w', encoding='utf8') as f2:
@@ -407,18 +357,13 @@ class SpellCorrectorTests(unittest.TestCase):
             text = files[0]
             dictionary = files[1]
             output = files[2]
-            with open(text.name, 'w', encoding='utf8') as f:
-                print('Test text wiht mistakees', file=f)
-                print('Isit a mistake?', file=f)
-            with open(dictionary.name, 'w', encoding='utf8') as f:
-                print('test', file=f)
-                print('text', file=f)
-                print('with', file=f)
-                print('mistakes', file=f)
-                print('is', file=f)
-                print('it', file=f)
-                print('a', file=f)
-                print('mistake', file=f)
+            print_lines_to_file(
+                ['Test text wiht mistakees', 'Isit a mistake?'], text.name)
+            print_lines_to_file(
+                ['test',
+                 'text',
+                 'with',
+                 'mistakes', 'is', 'it', 'a', 'mistake'], dictionary.name)
             trie = ldc.load_dictionary(dictionary.name)
             with open(text.name, 'r', encoding='utf8') as f1:
                 with open(output.name, 'w', encoding='utf8') as f2:

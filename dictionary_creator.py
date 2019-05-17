@@ -4,27 +4,28 @@ import argparse
 import sys
 import re
 
-splitter = re.compile(r"[^\w'-]")
-number = re.compile(r"[0-9]+")
-dash = re.compile(r"-")
-line_break_detector = re.compile(r"(\w+)-$")
-word_getter = re.compile(r"^\w+")
+SPLITTER = re.compile(r"[^\w'-]")
+NUMBER = re.compile(r"[0-9]+")
+DASH = re.compile(r"-")
+LINE_BREAK_DETECTOR = re.compile(r"(\w+)-$")
+WORD_GETTER = re.compile(r"^\w+")
 
 
 def is_not_none_or_number_or_dash(string):
-    return string and not number.search(string) and not \
-        dash.match(string)
+    return (string and not NUMBER.search(string) and not
+            DASH.match(string))
 
 
 def detect_line_break(string):
-    line_break_word = line_break_detector.search(string)
-    if line_break_word and is_not_none_or_number_or_dash(line_break_word.group(1)):
+    line_break_word = LINE_BREAK_DETECTOR.search(string)
+    if line_break_word and is_not_none_or_number_or_dash(
+            line_break_word.group(1)):
         return line_break_word.group(1)
     return None
 
 
 def get_first_word_from_line(string):
-    first_word = word_getter.search(string)
+    first_word = WORD_GETTER.search(string)
     if first_word and is_not_none_or_number_or_dash(first_word.group(0)):
         return first_word.group(0)
     return None
@@ -43,7 +44,8 @@ def get_words_from_text(file):
         line_break_word = detect_line_break(line)
         if line_break_word:
             line = line[:-(len(line_break_word) + 2)]
-        for word in filter(is_not_none_or_number_or_dash, splitter.split(line)):
+        for word in filter(
+                is_not_none_or_number_or_dash, SPLITTER.split(line)):
             words.add(word.casefold())
     return words
 
@@ -76,7 +78,8 @@ def append(args):
 
 
 def add(args):
-    if splitter.search(args.word) or not is_not_none_or_number_or_dash(args.word):
+    if (SPLITTER.search(args.word) or
+            not is_not_none_or_number_or_dash(args.word)):
         print("Given string is not a word")
         return
     with open(args.dict, 'r', encoding='utf8') as f:

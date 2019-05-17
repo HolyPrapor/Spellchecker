@@ -17,4 +17,4 @@ class TempFiles:
             file.close()
             os.remove(file.name)
         if exc_val:
-            raise
+            return exc_tb.suppress

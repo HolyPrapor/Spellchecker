@@ -32,7 +32,7 @@
 * 1.2) [-correct] amount - этот флаг позволяет исправить amount ошибок и выводит их в соответствующем формате.
 * 2) Mistake Finder
 Выводит на экран ошибки в указанном выше формате без координат и исправлений.
-Пример запуска: `./spellcorrector.py -infile Texts\HarryPotterText.txt mistake_finder 10`
+Пример запуска: `./spellcorrector.py --infile Texts\HarryPotterText.txt mistake_finder 10`
 Более подробная справка по запуску: `./spellcorrector.py --help`
 
 
@@ -47,9 +47,12 @@
 Складывает два словаря и кладёт их в отдельный словарь.
 * 4) Create
 Создаёт словарь из данного текста.
+Пример запуска: `./dictionary_creator.py add Zeliboba "Correct Dictionaries/large.dic"`
+Более подробная справка по запуску: `./dictionary_creator.py --help`
 
 ## Консольная версия Dictionary Downloader
 Скачивает два словаря: русский и английский. Кладёт их в папку Correct Dictionaries.
+Пример запуска: `./dictionary_downloader.py`
 
 
 ## Подробности реализации
