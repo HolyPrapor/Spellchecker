@@ -14,21 +14,21 @@ You can also create your own dictionary from a text file for any language throug
 
 
 ## Content
-* Console SpellCorrector: `spellcorrector.py`
-* Console Dictionary Creator: `dictionary_creator.py`
-* Console Dictionary Downloader: `dictionary_downloader.py`
-* Modules: `SpellCorrector/`
-* Tests: `Tests/`
-* Used dictionaries: `Correct Dictionaries`
+- Console SpellCorrector: `spellcorrector.py`
+- Console Dictionary Creator: `dictionary_creator.py`
+- Console Dictionary Downloader: `dictionary_downloader.py`
+- Modules: `SpellCorrector/`
+- Tests: `Tests/`
+- Used dictionaries: `Correct Dictionaries`
 
 
 ## SpellCorrector
 Has 2 modes:
-* 1) Mispellings
+1) Mispellings
 Prints all mistakes in the following format: `line:index` {'word': 'WORD'`, 'correction': ['CORR1', 'CORR2']`}
-* 1.1) [-c], [--coordinate] - Adds coordinate `line:index` to the output
-* 1.2) [--correct] amount - Corrects `amount` of mistakes and prints them
-* 2) Mistake Finder
+- [-c], [--coordinate] - Adds coordinate `line:index` to the output
+- [--correct] amount - Corrects `amount` of mistakes and prints them
+2) Mistake Finder
 Prints all mistakes in the following format without coordinates and corrections
 Example: `./spellcorrector.py --infile Texts\HarryPotterText.txt mistake_finder 10`
 More detailed information is available with `--help` flag.
@@ -37,13 +37,13 @@ More detailed information is available with `--help` flag.
 ## Dictionary Creator
 Allows you to work with dictionaries.
 Has 4 modes:
-* 1) Add
+1) Add
 Adds a word to the chosen dictionary. (You can't just open the dictionary and append a word. A special hash `salt` is used to prevent corruption and keep words in the desired format.)
-* 2) Append
+2) Append
 Appends second dictionary to the first
-* 3) Merge
+3) Merge
 Merges two dictionaries and stores them as a separate dictionary
-* 4) Create
+4) Create
 Creates a dictionary from a provided text file.
 Example: `./dictionary_creator.py add Zeliboba "Correct Dictionaries/large.dic"`
 There is also `--help` available.
