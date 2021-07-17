@@ -1,64 +1,61 @@
 # SpellChecker and SpellCorrector
-Версия 1.0
+Version 1.0
 
-Автор: Цуп Илья (ilyatzup@gmail.com)
+Author: Tzoop Ilya (ilyatzoop@gmail.com)
 
-## Описание
-Данное приложение является консольной версией SpellCorrector'а, который 
-поддерживает большинство языков мира.
-В качестве словарей для проверки, присутствуют готовые словари русского
-и английского языков, а также возможность создать собственный словарь
-для любого языка через утилиту dictionary_creator.
+## Description
+This application is a console version of a `SpellCorrector` app, which supports all languages of the world.
+As a dictionaries for testing there are Russian and English dictionaries available.
+You can also create your own dictionary from a text file for any language through `dictionary_creator.py`
 
 
-## Требования
-* Python версии не ниже 3.6
+## Requirements
+* Python >= 3.6
 
 
-## Состав
-* Консольная версия SpellCorrector: `spellcorrector.py`
-* Консольная версия Dictionary Creator: `dictionary_creator.py`
-* Консольная версия Dictionary Downloader: `dictionary_downloader.py`
-* Модули: `SpellCorrector/`
-* Тесты: `Tests/`
-* Готовые словари: `Correct Dictionaries`
+## Content
+* Console SpellCorrector: `spellcorrector.py`
+* Console Dictionary Creator: `dictionary_creator.py`
+* Console Dictionary Downloader: `dictionary_downloader.py`
+* Modules: `SpellCorrector/`
+* Tests: `Tests/`
+* Used dictionaries: `Correct Dictionaries`
 
 
-## Консольная версия SpellCorrector
-Имеет 2 режима работы:
+## SpellCorrector
+Has 2 modes:
 * 1) Mispellings
-Выводит на экран ошибки в формате `line:index` {'word': 'WORD'`, 'correction': ['CORR1', 'CORR2']`}
-* 1.1) [-c], [--coordinate] - эти флаги добавляют к выводу координаты в виде line:index.
-* 1.2) [-correct] amount - этот флаг позволяет исправить amount ошибок и выводит их в соответствующем формате.
+Prints all mistakes in the following format: `line:index` {'word': 'WORD'`, 'correction': ['CORR1', 'CORR2']`}
+* 1.1) [-c], [--coordinate] - Adds coordinate `line:index` to the output
+* 1.2) [--correct] amount - Corrects `amount` of mistakes and prints them
 * 2) Mistake Finder
-Выводит на экран ошибки в указанном выше формате без координат и исправлений.
-Пример запуска: `./spellcorrector.py --infile Texts\HarryPotterText.txt mistake_finder 10`
-Более подробная справка по запуску: `./spellcorrector.py --help`
+Prints all mistakes in the following format without coordinates and corrections
+Example: `./spellcorrector.py --infile Texts\HarryPotterText.txt mistake_finder 10`
+More detailed information is available with `--help` flag.
 
 
-## Консольная версия Dictionary Creator
-Утилита, позволяющая работать со словарями.
-Имеет 4 режима работы:
+## Dictionary Creator
+Allows you to work with dictionaries.
+Has 4 modes:
 * 1) Add
-Добавляет слово к выбранному словарю.
+Adds a word to the chosen dictionary. (You can't just open the dictionary and append a word. A special hash `salt` is used to prevent corruption and keep words in the desired format.)
 * 2) Append
-Добавляет второй словарь к первому.
+Appends second dictionary to the first
 * 3) Merge
-Складывает два словаря и кладёт их в отдельный словарь.
+Merges two dictionaries and stores them as a separate dictionary
 * 4) Create
-Создаёт словарь из данного текста.
-Пример запуска: `./dictionary_creator.py add Zeliboba "Correct Dictionaries/large.dic"`
-Более подробная справка по запуску: `./dictionary_creator.py --help`
+Creates a dictionary from a provided text file.
+Example: `./dictionary_creator.py add Zeliboba "Correct Dictionaries/large.dic"`
+There is also `--help` available.
 
-## Консольная версия Dictionary Downloader
-Скачивает два словаря: русский и английский. Кладёт их в папку Correct Dictionaries.
-Пример запуска: `./dictionary_downloader.py`
+## Dictionary Downloader
+Downloads Russian and English dictionaries and stores them in the `Correct Dictionaries` folder.
+Launch: `./dictionary_downloader.py`
 
 
-## Подробности реализации
-Программа поддерживает переносы строк, пропущенные пробелы, опечатки в словах.
-Модуль, реализующий логику подсчёта расстояния Левенштейна -
-`SpellCorrector/levenshtein_distance_counter.py`. Он основан на работе с бором(trie)
-и подсчёт расстояния осуществляется засчёт перебора дерева с эвристической оптимизацией.
-Пропущенные пробелы отрабатываются перебором вариантов в `spellcorrector.py`. 
+## Implementation details
+Supports line breaks, skipped spaces, mispellings.
+Based on Levenshtein distance metric.
+Module, calculating Levenshtein distance, is located here: `SpellCorrector/levenshtein_distance_counter.py`
+This module is based on a Trie for fast distance calculation. There is also an heuristic optimization for the same purpose.
 
